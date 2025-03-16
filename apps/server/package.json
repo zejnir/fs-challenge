@@ -72,6 +72,7 @@
   "scripts": {
     "dev": "nodemon src/main.ts",
     "migrate": "prisma migrate dev",
+    "seed": "npx ts-node prisma/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -81,7 +82,8 @@
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "prisma": "^6.5.0"
