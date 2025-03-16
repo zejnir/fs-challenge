@@ -5,7 +5,9 @@ const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 app.use('/api/users', userRouter);
 

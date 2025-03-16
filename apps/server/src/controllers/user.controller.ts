@@ -5,27 +5,21 @@ const userClient = new PrismaClient().user;
 
 export const getQueryUsers = async (req: Request, res: Response) => {
   try {
-    const { query, email, phoneNumber } = req.query;
-    const filters: any = {};
+    const { query } = req.query;
 
-    if (email) {
-      filters.email = String(email);
-    }
-    if (phoneNumber) {
-      filters.phoneNumber = String(phoneNumber);
-    }
-
-    if (query) {
-      filters.OR = [
-        { firstName: { contains: String(query), mode: 'insensitive' } },
-        { lastName: { contains: String(query), mode: 'insensitive' } },
-        { email: { contains: String(query), mode: 'insensitive' } },
-        { phoneNumber: { contains: String(query), mode: 'insensitive' } },
-      ];
-    }
+    const filters = query
+      ? {
+          OR: [
+            { firstName: { contains: String(query) } },
+            { lastName: { contains: String(query) } },
+            { email: { contains: String(query) } },
+            { phoneNumber: { contains: String(query) } },
+          ],
+        }
+      : undefined;
 
     const users = await userClient.findMany({
-      where: Object.keys(filters).length > 0 ? filters : undefined,
+      where: filters,
     });
 
     res.status(200).json(users);
