@@ -1,12 +1,47 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import useUserById from '../../app/hooks/useUserById';
+import useUpdateUserById from '../hooks/useUpdateUser';
+import { IUser } from '../../app/types/userTypes';
 
 export default function EditUser() {
   const params = useParams();
   const { id } = params;
   const user = typeof id === 'string' ? useUserById(id) : null;
+  const { updateUser, isLoading: isUpdating, error } = useUpdateUserById();
+
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
+      setPhoneNumber(user.phoneNumber);
+    }
+  }, [user]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!id || typeof id !== 'string') {
+      console.error('Invalid user ID');
+      return;
+    }
+
+    const updatedUser: Partial<IUser> = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+    };
+    await updateUser(id, updatedUser);
+  };
 
   if (!user) {
     return (
@@ -25,41 +60,54 @@ export default function EditUser() {
               <p className="px-6 py-3 w-full">Edit User</p>
             </div>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200 flex flex-wrap w-full">
               <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-full md:w-fit">
                 <input
                   type="text"
                   className="text-gray-500 pl-3 w-full"
-                  placeholder={user.firstName}
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-full md:w-fit">
                 <input
                   type="text"
                   className="text-gray-500 pl-3 w-full"
-                  placeholder={user.lastName}
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
               <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-full md:w-fit">
                 <input
                   type="text"
                   className="text-gray-500 pl-3 w-full"
-                  placeholder={user.email}
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-full md:w-fit">
                 <input
                   type="text"
                   className="text-gray-500 pl-3 w-full"
-                  placeholder={user.phoneNumber}
+                  placeholder="Phone Number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
               <div className="w-full flex justify-center py-5">
-                <button className="bg-white rounded-md px-5 py-1 text-black cursor-pointer">
-                  Save
+                <button
+                  type="submit"
+                  className="bg-white rounded-md px-5 py-1 text-black cursor-pointer"
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? 'Saving...' : 'Save'}
                 </button>
               </div>
+              {error && <div className="text-red-500 text-center">{error}</div>}
             </div>
           </form>
         </div>

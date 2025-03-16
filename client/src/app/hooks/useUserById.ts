@@ -10,8 +10,6 @@ export default function useUserById(id: string): IUser | null {
   useEffect(() => {
     async function getUser() {
       const data = await fetchUserById(id);
-      console.log('ovdje sam');
-      console.log('data', data);
       setUser(data);
     }
     getUser();
