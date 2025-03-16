@@ -1,4 +1,5 @@
 import { IUser } from '../types/userTypes';
+import Link from 'next/link';
 
 interface UserRowProps {
   user: IUser;
@@ -14,12 +15,12 @@ export default function UserRow({ user }: UserRowProps) {
       <td className="px-6 py-4">{user.email}</td>
       <td className="px-6 py-4">{user.phoneNumber}</td>
       <td className="px-6 py-4">
-        <a
-          href="#"
+        <Link
+          href={`/${user.id}`}
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
         >
           Edit
-        </a>
+        </Link>
       </td>
     </tr>
   );

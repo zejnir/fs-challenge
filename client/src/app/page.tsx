@@ -10,7 +10,7 @@ export default function Index() {
   const users = useFetchUsers(query);
 
   return (
-    <div className="bg-gray-800 h-screen py-20">
+    <div className="bg-gray-800 h-fit py-20">
       <SearchBar query={query} setQuery={setQuery} />
       <UserTable users={users} />
     </div>
