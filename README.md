@@ -1,82 +1,89 @@
-# FsChallenge
+# Project Setup Guide
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Prerequisites
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+This project is structured as an NX Monorepo, which allows for better scalability and management of multiple applications within a single repository.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Before proceeding, ensure you have NX installed globally:
 
-## Finish your remote caching setup
-
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/fNaTTwH6o7)
-
-
-## Run tasks
-
-To run the dev server for your app, use:
-
-```sh
-npx nx serve server
+```
+npm install -g nx@latest
 ```
 
-To create a production bundle:
+## Backend Setup
 
-```sh
-npx nx build server
+1. Install Dependencies
+
+Navigate to the backend directory and install dependencies:
+
+```
+cd apps/server
+npm install
 ```
 
-To see all available targets to run for a project, run:
+2. Environment Variables
 
-```sh
-npx nx show project server
+Copy the example environment file to create a valid .env file:
+
+```
+cp .env.example .env
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+3. Install Prisma ORM
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/node:app demo
+```
+npm install prisma --save-dev
 ```
 
-To generate a new library, use:
+4. Run Database Migrations
 
-```sh
-npx nx g @nx/node:lib mylib
+Apply database migrations using Prisma:
+
+```
+npm run migrate
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+5.Seed the Database (Optional)
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+If the project requires seeding the database with initial data, run:
 
+```
+npm run seed
+```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+6. Start Backend Server
 
-## Install Nx Console
+From the root of the repository, start the backend:
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+```
+nx dev apps/server
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Frontend Setup
 
-## Useful links
+1. Install Dependencies
 
-Learn more:
+Navigate to the frontend directory and install dependencies:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```
+cd client
+npm install
+```
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+2. Start Frontend Application
+
+From the root of the repository, start the frontend:
+
+```
+nx dev client
+```
+
+## Notes
+
+1. The backend must be running before starting the frontend.
+
+2. Ensure your database is properly set up before running migrations.
+
+3. Use .env to configure necessary environment variables for both backend and frontend as required.
+
+Now your application should be up and running!
